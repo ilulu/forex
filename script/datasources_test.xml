@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:d="http://www.bstek.com/dorado/schema"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.bstek.com/dorado/schema http://www.bstek.com/dorado/schema/spring-dorado-7.0.xsd">
+
+	<bean id= "sessionFactory" parent="bdf.sessionFactory">
+		<property name="dataSourceName" value="mysql" />
+		<property name="hbmContainers">
+			<list>
+				<value>exam</value>
+			</list>
+		</property>
+		<property name="entityInterceptor" ref="dorado.unByteCodeProxyInterceptor" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.transaction.factory_class">com.atomikos.icatch.jta.hibernate3.AtomikosJTATransactionFactory
+				</prop>
+				<prop key="hibernate.transaction.manager_lookup_class">com.atomikos.icatch.jta.hibernate3.TransactionManagerLookup
+				</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">none</prop>
+			</props>
+		</property>
+	</bean>
+	<bean parent="bdf.hbmFileContainer">
+		<property name="hbmContainerName" value="exam"></property>
+		<property name="hbmFileList">
+			<list>
+				<value>com/cnis/exam/domain/*.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="bdf.hibernateTransactionManager" class="com.bstek.bdf.hibernate.HibernateTransactionManagerBean">
+		<property name="rollbackOnCommitFailure" value="true" />
+	</bean>
+
+	<bean id="bdf.defaultTransactionManager" class="com.bstek.bdf.datasource.JdbcTransactionManager" />
+
+	<bean id="bdf.transactionInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="bdf.defaultTransactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="insert*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="clear*">PROPAGATION_REQUIRED</prop>
+				<prop key="restore*">PROPAGATION_REQUIRED</prop>
+				<prop key="replace*">PROPAGATION_REQUIRED</prop>
+				<prop key="process*">PROPAGATION_REQUIRED</prop>
+				<prop key="execute*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="bdf.transaction.beanNameAutoProxyCreator"
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="proxyTargetClass" value="true"></property>
+		<property name="beanNames" value="*PR,*BO" />
+		<property name="interceptorNames">
+			<list>
+				<value>bdf.transactionInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean parent="bdf.dataSourceRegister">
+		<property name="name" value="mysql" />
+		<property name="asDefault" value="true" />
+		<property name="dataSource">
+			<bean class="org.apache.commons.dbcp.BasicDataSource">
+				<property name="url"
+					value="jdbc:mysql://192.168.18.77:3306/cnisreps_test?useUnicode=true&amp;characterEncoding=UTF-8" />
+				<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+				<property name="username" value="root" />
+				<property name="password" value="root" />
+				<property name="minIdle" value="10" />
+				<property name="maxActive" value="20" />
+			</bean>
+		</property>
+	</bean>
+</beans>

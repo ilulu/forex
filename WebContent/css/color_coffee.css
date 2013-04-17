@@ -1,0 +1,75 @@
+/*a {
+    color: #006197;
+}*/
+
+/*top menu*/
+.sub-navigation ul li a, #meta-navigation li a {
+   color: #8A4206;
+}
+.sub-navigation ul li a:hover, #meta-navigation li a:hover {
+   color: #8A4206;
+
+}
+.sub-navigation ul li a:hover, #meta-navigation li a:hover, .sub-navigation ul li.active a, #meta-navigation li.active a {
+   color: #8A4206;
+}
+/*left menu*/
+#navigation li.active a {
+    color:#8A4206;
+}
+#navigation ul li a:hover{
+    color:#8A4206;
+}
+/*text*/
+#text h1 {
+    color: #8A4206;
+}
+h2 {
+    color: #8A4206;
+}
+#text table th {
+    color: #8A4206;
+}
+#text.wide h3.table-title {
+	color: #8A4206;
+}
+#text.large h3.table-title {
+	color: #8A4206;
+}
+#text table td strong, #text table tr.tableHead td {
+    color: #8A4206;
+}
+/*top_title background*/
+.top_title_out{background-image:url(../images/skins/bg-banner-coffee.png);}
+/*content table title*/
+h3.table-title, h3.table-title-alone {
+    color: #FFFFFF;/*表格标题*/
+}
+h3.table-title-small {
+    color: #FFFFFF;
+}
+h3.table-title-small a {
+    color: #FFFFFF;
+}
+h3.table-title-big {
+	color: #FFFFFF;
+}
+h3.table-title a {
+    color: #FFFFFF;
+}
+h3.label {
+    color: #FFFFFF;
+}
+/*footer background*/
+/*footer background*/
+.footer_out{/*background-image:url(../images/skins/bg-banner-green.png);*/
+border-top:2px solid #8A4206;
+color:#FFFFFF;
+width:1000px;
+margin:auto;
+}
+h3.table-title, h3.table-title-alone {
+    background:#8A4206;
+}
+
+/**/

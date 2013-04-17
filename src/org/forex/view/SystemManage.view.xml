@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="contactUs">
+      <Property name="matchType">org.forex.domain.ContactUs</Property>
+      <Property name="creationType">org.forex.domain.ContactUs</Property>
+      <PropertyDef name="id">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="phone">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="email">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="comments">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="email">
+      <Property name="creationType">org.forex.domain.EmailAddress</Property>
+      <PropertyDef name="id">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="address">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="password">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="smtpServer">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="smtpPort">
+        <Property name="dataType">String</Property>
+        <Validator type="regExp">
+          <Property name="whiteRegExp">^\d*$</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="isSSL">
+        <Property name="dataType">Boolean</Property>
+        <Property name="defaultValue">false</Property>
+      </PropertyDef>
+      <PropertyDef name="isTLS">
+        <Property name="dataType">Boolean</Property>
+        <Property name="defaultValue">false</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View layout="vbox align:center" name="view1">
+    <ClientEvent name="onReady">&#xD;
+var diaLogin = view.get(&quot;#dialogLogin&quot;);&#xD;
+diaLogin.show();&#xD;
+</ClientEvent>
+    <Property name="styleSheetFile">/css/changeColor&amp;menu.css</Property>
+    <DataSet id="dsContactUs">
+      <Property name="dataType">[contactUs]</Property>
+      <Property name="dataProvider">contactUsMan#getContactInfo</Property>
+      <Property name="ignored">false</Property>
+    </DataSet>
+    <DataSet id="dsQuery">
+      <ClientEvent name="onReady">var dataset = view.get(&quot;#dsQuery&quot;);&#xD;
+dataset.insert({&#xD;
+	'id':''&#xD;
+});&#xD;
+</ClientEvent>
+      <Property name="dataType">contactUs</Property>
+    </DataSet>
+    <AjaxAction id="changeSkinAction">
+      <ClientEvent name="onSuccess">alert(&quot;Congratulations!Website's skin has been changed successfully!&quot;);&#xD;
+//window.location.reload();&#xD;
+</ClientEvent>
+      <Property name="service">loadSkin#changeSkin</Property>
+      <Property name="parameter"></Property>
+    </AjaxAction>
+    <AjaxAction id="actionajax">
+      <Property name="service">contactUsMan#loginCheck</Property>
+    </AjaxAction>
+    <HtmlContainer id="htmlContainerMain">
+      <Property name="visible">false</Property>
+      <HtmlContainer>
+        <Property name="content">&lt;div id=&quot;header&quot;>&#xD;
+	&lt;!-- Start Header -->&#xD;
+	&lt;h1 id=&quot;title&quot;>&#xD;
+		&lt;a href=&quot;welcome.d&quot;>&amp;nbsp;&lt;/a>&#xD;
+	&lt;/h1>&#xD;
+	&lt;div class=&quot;sub-navigation&quot;>&lt;/div>&#xD;
+	&lt;div>&#xD;
+		&lt;ul id=&quot;meta-navigation&quot;>&#xD;
+			&lt;li id=&quot;meta-navContact&quot;>&lt;a href=&quot;welcome.d&quot;>HOME&lt;/a>&lt;/li>&#xD;
+		&lt;/ul>&#xD;
+	&lt;/div>&#xD;
+	&lt;!--div id=&quot;ticker&quot; class=&quot;empty&quot;>&#xD;
+    &lt;/div-->&#xD;
+&lt;/div>&#xD;
+		</Property>
+      </HtmlContainer>
+      <TabControl id="tabControl" layoutConstraint="align:center">
+        <Property name="tabPlacement">top</Property>
+        <Property name="width">1000</Property>
+        <Property name="height">700</Property>
+        <Property name="showMenuButton">true</Property>
+        <ControlTab>
+          <Property name="name">tabChangeColor</Property>
+          <Property name="caption">change website skin</Property>
+          <Property name="height">100%</Property>
+          <Container>
+            <Property name="height">100%</Property>
+            <HtmlContainer id="HtmlContainerSkin" layout="hbox">
+              <Property name="height">100</Property>
+              <Property name="contentOverflow">hidden</Property>
+              <Label id="skinBlue">
+                <ClientEvent name="onClick">var changeSkinAction = view.get(&quot;#changeSkinAction&quot;);&#xD;
+var params=&#xD;
+{&#xD;
+	systemcode:&quot;blue&quot;&#xD;
+}&#xD;
+changeSkinAction.set(&quot;parameter&quot;,params);&#xD;
+changeSkinAction.execute();&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+                <Property name="text">to blue</Property>
+                <Property name="width">100</Property>
+              </Label>
+              <Label id="skinGreen">
+                <ClientEvent name="onClick">var changeSkinAction = view.get(&quot;#changeSkinAction&quot;);&#xD;
+var params=&#xD;
+{&#xD;
+	systemcode:&quot;green&quot;&#xD;
+}&#xD;
+changeSkinAction.set(&quot;parameter&quot;,params);&#xD;
+changeSkinAction.execute();&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+                <Property name="text">to green</Property>
+                <Property name="width">100</Property>
+              </Label>
+              <Label id="skinCoffee">
+                <ClientEvent name="onClick">var changeSkinAction = view.get(&quot;#changeSkinAction&quot;);&#xD;
+var params=&#xD;
+{&#xD;
+	systemcode:&quot;coffee&quot;&#xD;
+}&#xD;
+changeSkinAction.set(&quot;parameter&quot;,params);&#xD;
+changeSkinAction.execute();&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+                <Property name="text">to coffee</Property>
+                <Property name="width">100</Property>
+              </Label>
+              <Label id="skinPink">
+                <ClientEvent name="onClick">var changeSkinAction = view.get(&quot;#changeSkinAction&quot;);&#xD;
+var params=&#xD;
+{&#xD;
+	systemcode:&quot;pink&quot;&#xD;
+}&#xD;
+changeSkinAction.set(&quot;parameter&quot;,params);&#xD;
+changeSkinAction.execute();&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+                <Property name="text">to pink</Property>
+                <Property name="width">100</Property>
+              </Label>
+              <Label id="skinAutumn">
+                <ClientEvent name="onClick">var changeSkinAction = view.get(&quot;#changeSkinAction&quot;);&#xD;
+var params=&#xD;
+{&#xD;
+	systemcode:&quot;autumn&quot;&#xD;
+}&#xD;
+changeSkinAction.set(&quot;parameter&quot;,params);&#xD;
+changeSkinAction.execute();&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+                <Property name="text">to autumn</Property>
+                <Property name="width">100</Property>
+              </Label>
+            </HtmlContainer>
+          </Container>
+        </ControlTab>
+        <ControlTab>
+          <Property name="name">tabSearchCu</Property>
+          <Property name="caption">search contact info</Property>
+          <Property name="height">100%</Property>
+          <Container>
+            <GroupBox>
+              <Property name="width">1000</Property>
+              <Property name="caption">search</Property>
+              <Buttons/>
+              <Children>
+                <AutoForm id="afContactCondition">
+                  <Property name="dataSet">dsQuery</Property>
+                  <Property name="dataType">contactUs</Property>
+                  <Property name="autoCreateElements">false</Property>
+                  <Property name="ignored">false</Property>
+                  <Property name="width">1000</Property>
+                  <AutoFormElement name="autoFormElement1">
+                    <Property name="name">name</Property>
+                    <Property name="property">name</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement name="autoFormElement2">
+                    <Property name="name">phone</Property>
+                    <Property name="property">phone</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement name="autoFormElement2">
+                    <Property name="name">email</Property>
+                    <Property name="property">email</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                </AutoForm>
+              </Children>
+            </GroupBox>
+            <ToolBar>
+              <Property name="width">1000</Property>
+              <ToolBarButton>
+                <ClientEvent name="onClick">var dsQuery = view.get(&quot;#dsQuery&quot;);&#xD;
+var dsContactUs = view.get(&quot;#dsContactUs&quot;);&#xD;
+dsContactUs.set(&quot;parameter&quot;,{&#xD;
+	&quot;param&quot; : dsQuery.getData()&#xD;
+});&#xD;
+dsContactUs.flushAsync();&#xD;
+</ClientEvent>
+                <Property name="caption">search</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+              </ToolBarButton>
+              <Separator/>
+              <Fill/>
+              <DataPilot>
+                <Property name="itemCodes">+,-,pages</Property>
+              </DataPilot>
+            </ToolBar>
+            <DataGrid id="dGcontactInfo">
+              <Property name="dataSet">dsContactUs</Property>
+              <Property name="width">1000</Property>
+              <Property name="readOnly">true</Property>
+              <DataColumn name="id">
+                <Property name="property">id</Property>
+                <Property name="ignored">true</Property>
+              </DataColumn>
+              <DataColumn name="name">
+                <Property name="property">name</Property>
+              </DataColumn>
+              <DataColumn name="phone">
+                <Property name="property">phone</Property>
+              </DataColumn>
+              <DataColumn name="email">
+                <Property name="property">email</Property>
+              </DataColumn>
+              <DataColumn name="comments">
+                <Property name="property">comments</Property>
+                <Property name="userData"></Property>
+                <Property name="editorType">TextArea</Property>
+              </DataColumn>
+            </DataGrid>
+          </Container>
+        </ControlTab>
+        <IFrameTab>
+          <Property name="name">tabProManager</Property>
+          <Property name="path">productmanager.d</Property>
+          <Property name="caption">product manager</Property>
+        </IFrameTab>
+        <ControlTab>
+          <Property name="caption">tabEmail</Property>
+          <Property name="name">EditorEmail</Property>
+          <Container>
+            <ToolBar id="op">
+              <ToolBarButton id="saveEmail">
+                <Property name="action">saveEmailUA</Property>
+                <Property name="caption">保存</Property>
+              </ToolBarButton>
+              <ToolBarButton id="testMail">
+                <Property name="action">testMailAA</Property>
+                <Property name="caption">发送测试邮件</Property>
+              </ToolBarButton>
+            </ToolBar>
+            <AutoForm id="emailAF">
+              <Property name="dataSet">dsEmail</Property>
+              <Property name="dataType">email</Property>
+              <AutoFormElement>
+                <Property name="name">address</Property>
+                <Property name="property">address</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">password</Property>
+                <Property name="property">password</Property>
+                <Property name="editorType">PasswordEditor</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">smtpServer</Property>
+                <Property name="property">smtpServer</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">smtpPort</Property>
+                <Property name="property">smtpPort</Property>
+                <Property name="editorType">NumberSpinner</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">isSSL</Property>
+                <Property name="property">isSSL</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">isTLS</Property>
+                <Property name="property">isTLS</Property>
+                <Editor/>
+              </AutoFormElement>
+            </AutoForm>
+          </Container>
+        </ControlTab>
+      </TabControl>
+    </HtmlContainer>
+    <Dialog id="dialogLogin" layout="form cols:*">
+      <Property name="center">true</Property>
+      <Property name="width">190</Property>
+      <Property name="modal">true</Property>
+      <Property name="caption">enter password</Property>
+      <Property name="height">140</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var action = view.get(&quot;#actionajax&quot;);&#xD;
+var elePwd = view.get(&quot;#elePassword&quot;);&#xD;
+var elePwdValue = elePwd.get(&quot;value&quot;);&#xD;
+var hcMain = view.get(&quot;#htmlContainerMain&quot;);&#xD;
+var diaLogin = view.get(&quot;#dialogLogin&quot;);&#xD;
+&#xD;
+action.set(&quot;parameter&quot;,elePwdValue);&#xD;
+action.execute(function(flag){&#xD;
+	if(flag){&#xD;
+		dorado.MessageBox.alert(&quot;Authentication successfully!&quot;);&#xD;
+		diaLogin.hide();&#xD;
+		hcMain.set(&quot;visible&quot;,true);&#xD;
+	}else{&#xD;
+		dorado.MessageBox.alert(&quot;Authentication failed!&quot;);&#xD;
+	}&#xD;
+});</ClientEvent>
+          <Property name="caption">submit</Property>
+          <Property name="width">80</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <PasswordEditor id="elePassword" layoutConstraint="type:center;align:center">
+          <ClientEvent name="onKeyDown">if(13==arg.keyCode){&#xD;
+	var action = view.get(&quot;#actionajax&quot;);&#xD;
+var elePwd = view.get(&quot;#elePassword&quot;);&#xD;
+var elePwdValue = elePwd.get(&quot;value&quot;);&#xD;
+var hcMain = view.get(&quot;#htmlContainerMain&quot;);&#xD;
+var diaLogin = view.get(&quot;#dialogLogin&quot;);&#xD;
+&#xD;
+action.set(&quot;parameter&quot;,elePwdValue);&#xD;
+action.execute(function(flag){&#xD;
+	if(flag){&#xD;
+		dorado.MessageBox.alert(&quot;Authentication successfully!&quot;);&#xD;
+		diaLogin.hide();&#xD;
+		hcMain.set(&quot;visible&quot;,true);&#xD;
+	}else{&#xD;
+		dorado.MessageBox.alert(&quot;Authentication failed!&quot;);&#xD;
+	}&#xD;
+});&#xD;
+}&#xD;
+</ClientEvent>
+          <Property name="width">100%</Property>
+          <Property name="blankText">输入密码</Property>
+        </PasswordEditor>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <DataSet id="dsEmail">
+      <Property name="dataType">email</Property>
+      <Property name="dataProvider">contactUsMan#getCurrentEmail</Property>
+    </DataSet>
+    <UpdateAction id="saveEmailUA">
+      <Property name="dataResolver">contactUsMan#saveEmail</Property>
+      <Property name="confirmMessage">Confirm?</Property>
+      <Property name="successMessage">Sucess!</Property>
+      <Property name="executingMessage">Saving....</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsEmail</Property>
+        <Property name="dataPath">!DIRTY_TREE</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <AjaxAction id="testMailAA">
+      <ClientEvent name="onSuccess">switch(arg.result){&#xD;
+	case &quot;2&quot;:&#xD;
+		dorado.MessageBox.alert(&quot;请先保存配置&quot;);&#xD;
+		break;&#xD;
+	case &quot;1&quot;:&#xD;
+		dorado.MessageBox.alert(&quot;发送成功&quot;);	&#xD;
+	break;		&#xD;
+}&#xD;
+</ClientEvent>
+      <Property name="service">contactUsMan#testMail</Property>
+      <Property name="executingMessage">Sending...</Property>
+    </AjaxAction>
+  </View>
+</ViewConfig>

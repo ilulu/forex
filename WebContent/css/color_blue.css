@@ -1,0 +1,80 @@
+/*a {
+    color: #006197;
+}*/
+
+/*top menu*/
+.sub-navigation ul li a, #meta-navigation li a {
+   color: #0072E3;
+}
+.sub-navigation ul li a:hover, #meta-navigation li a:hover {
+   color: #0072E3;
+
+}
+.sub-navigation ul li a:hover, #meta-navigation li a:hover, .sub-navigation ul li.active a, #meta-navigation li.active a {
+   color: #0072E3;
+}
+/*left menu*/
+#navigation li.active a {
+    color:#0072E3;
+}
+#navigation ul li a:hover{
+    color:#0072E3;
+}
+/*text*/
+#text h1 {
+    color: #0072E3;
+}
+h2 {
+    color: #0072E3;
+}
+#text table th {
+    color: #0072E3;
+}
+#text.wide h3.table-title {
+	color: #0072E3;
+}
+#text.large h3.table-title {
+	color: #0072E3;
+}
+#text table td strong, #text table tr.tableHead td {
+    color: #0072E3;
+}
+/*top_title background*/
+.top_title_out
+{
+	background-image:url(../images/skins/bg-banner-blue.png);
+}
+/*content table title*/
+h3.table-title, h3.table-title-alone {
+    color: #FFFFFF;/*表格标题*/
+}
+h3.table-title-small {
+    color: #FFFFFF;
+}
+h3.table-title-small a {
+    color: #FFFFFF;
+}
+h3.table-title-big {
+	color: #FFFFFF;
+}
+h3.table-title a {
+    color: #FFFFFF;
+}
+h3.label {
+    color: #0072E3;
+}
+h3.table-title, h3.table-title-alone {
+    background:#0072E3;
+}
+/*footer background*/
+/*footer background*/
+.footer_out{/*background-image:url(../images/skins/bg-banner-green.png);*/
+border-top:2px solid #0072E3;
+color:#FFFFFF;
+width:1000px;
+margin:auto;}
+/*open an count table's content*/
+#oac_add_t .add_a
+{
+	color:#0072E3;
+}

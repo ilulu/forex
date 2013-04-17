@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="detailDataType">
+      <PropertyDef name="dm">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="profitRate">
+        <Property name="dataType">double</Property>
+      </PropertyDef>
+      <PropertyDef name="totalRate">
+        <Property name="dataType">double</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <ClientEvent name="onReady">var chartDS = view.get(&quot;#detailChart&quot;);
+var gridContent=view.get(&quot;#gridView&quot;);
+var account=&quot;${request.getParameter('name')}&quot;;
+//var getXMonthAction=view.get(&quot;#getXMonthAction&quot;);
+
+chartDS.set(&quot;parameter&quot;,{account:account}).flushAsync(function(){
+	//绘制图表
+    var list = chartDS.get(&quot;data&quot;);
+    var xAxis = [];
+    var yData = [];
+    var yLabel = [];
+    var yAxis = [{
+        name: &quot;Return&quot;,
+        data: yData
+    }];
+    var ite = list.iterator();
+	var contentHtml=gridContent.get(&quot;content&quot;);
+    while (ite.hasNext()) {
+        var entity = ite.next();
+        xAxis.push(entity.get(&quot;dm&quot;));
+		yLabel.push(entity.get(&quot;profitRate&quot;)*100)
+        yData.push(entity.get(&quot;totalRate&quot;)*100);
+		contentHtml+=generalGrid(ite,entity);
+    }
+	gridContent.set(&quot;content&quot;,contentHtml);
+	
+	var getIndex=function(data){
+		for(var i=0;i&lt;yData.length;i++){
+			if(yData[i]==data){
+				return i;
+			}
+		}
+	}
+	var chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'chartContainer',
+            type: 'line',
+            marginRight: 130,
+            marginBottom: 25
+        },
+        title: {
+            text: 'Monthly Cumulated Gross Return [%]',
+            x: -20 //center
+        },
+        subtitle: {
+            text: ' ',
+            x: -20
+        },
+        xAxis: {
+            categories: xAxis,
+			tickInterval:6
+        },
+        yAxis: {
+            title: {
+                text: ' '
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            formatter: function(){
+                return '&lt;b>' + this.x + '&lt;/b>&lt;br/>' +
+                &quot;ROI:&lt;b>Month:&quot;+(yLabel[getIndex(this.y)]).toFixed(2)+ &quot;% Cumulative&quot; +
+                ': ' +
+                (this.y).toFixed(2)+&quot;%&lt;b>&quot;;
+            }        },
+			plotOptions: {
+				line: {
+					marker: {
+						enabled: true
+					}				
+				}
+            },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -10,
+            y: 100,
+            borderWidth: 0
+        },
+        series: yAxis
+    });
+	
+	//图表绘制完成后,表格也完成了.同时可以根据表格内容计算出Statistics内容块的内容
+	
+	
+	fixDataGridBelow();
+});
+
+
+
+var perYearTotal=0;
+//拼装表格
+var generalGrid=function(ite,entity){
+	var date=entity.get(&quot;dm&quot;);
+	var year=date.substr(0,4);
+	var month=date.substr(5,2);
+	var cellValue=entity.get(&quot;profitRate&quot;);
+	var innerHTML=&quot;&quot;;
+	
+	//第一条记录需要在首行计算出年份并根据第一条记录的月份计算需要多少空格记录
+	if(!ite.hasPrevious()||perYearTotal==0){
+	    innerHTML+=&quot;&lt;tr>\n&quot;;
+		innerHTML+=&quot;&lt;td class=\&quot;oipBlue left\&quot; style=\&quot;width: 10px;\&quot;>&quot;+year+&quot;&lt;/td>&quot;;
+		innerHTML+=fixHeadCell(month);
+	}
+	innerHTML+=&quot;&lt;td id=\&quot;&quot;+year+&quot;_&quot;+month+&quot;\&quot; class=\&quot;oipBold right\&quot;>&quot;+(cellValue*100).toFixed(2)+&quot;%&lt;/td>&quot;;
+	
+	
+	perYearTotal+=Number(cellValue);
+	if(month==12){
+		innerHTML+=&quot;&lt;td class=\&quot;oipBold right\&quot;>&quot;+(perYearTotal*100).toFixed(2)+&quot;%&lt;/td>&quot;;
+		perYearTotal=0;
+		innerHTML+=&quot;&lt;/tr>&quot;;
+		if(ite.hasNext()){
+			innerHTML+=&quot;&lt;tr>&quot;;
+		}
+	}
+	
+	if(!ite.hasNext()){
+		innerHTML+=fixEndCell(month);
+		innerHTML+=&quot;&lt;td class=\&quot;oipBold right\&quot;>&quot;+(perYearTotal*100).toFixed(2)+&quot;%&lt;/td>&quot;;
+		innerHTML+=&quot;&lt;/table>&quot;;
+	}
+	return innerHTML;
+}
+
+/**
+ * 补充开始月份之前的空白月份数据
+ * 
+ */
+var fixHeadCell=function(month){
+	var innerHTML=&quot;&quot;;
+	for(var i=0;i&lt;month-1;i++){
+		innerHTML+=&quot;&lt;td class=\&quot; right\&quot;>-&lt;/td>&quot;;
+	}
+	return innerHTML;
+}
+/**
+ * 补充结束月份之后的空白月份
+ */
+var fixEndCell=function(month){
+	var innerHTML=&quot;&quot;;
+	for(var i=0;i&lt;12-month;i++){
+		innerHTML+=&quot;&lt;td class=\&quot; right\&quot;> &lt;/td>&quot;;
+	}
+	return innerHTML;
+}
+
+/**
+ * 制作下方表格内容.
+ */
+var fixDataGridBelow=function(){
+	//currentMonth
+	var now=new Date();
+	var nowMonth=(now.getMonth()+1)&lt;10?&quot;0&quot;+(now.getMonth()+1):(now.getMonth()+1);
+	var currentMonth=now.getFullYear()+&quot;_&quot;+(nowMonth);
+	var id=&quot;#&quot;+currentMonth;
+	var cellInTable=$(&quot;#&quot;+currentMonth).html();
+	$(&quot;#returnCurrentMonth&quot;).html(cellInTable);
+	
+	//lastMonth
+	var last1Month=Number(getLastXMonth(1));
+	$(&quot;#returnLastMonth&quot;).html(last1Month.toFixed(2)+&quot;%&quot;);
+	
+	//last3Month
+	var last3Month=Number(getLastXMonth(3));
+	$(&quot;#returnList3Months&quot;).html(last3Month.toFixed(2)+&quot;%&quot;);
+	
+	//last6Month
+	var last6Month=Number(getLastXMonth(6));
+	$(&quot;#returnLast6Months&quot;).html(last6Month.toFixed(2)+&quot;%&quot;);
+	
+	//last12Month
+	var last12Month=Number(getLastXMonth(12));
+	$(&quot;#returnLast12Months&quot;).html(last12Month.toFixed(2)+&quot;%&quot;);
+	
+	//last24Month
+	var last24Month=Number(getLastXMonth(24));
+	$(&quot;#returnLast24months&quot;).html(last24Month.toFixed(2)+&quot;%&quot;);
+	
+	//last36Month
+	var last36Month=Number(getLastXMonth(36));
+	$(&quot;#returnLast36Months&quot;).html(last36Month.toFixed(2)+&quot;%&quot;);
+}
+var getLastXMonth=function(xCount){
+	var lastXMonthRate=Number(0);
+	var now=new Date();
+	for(var i=1;i&lt;xCount+1;i++){
+		var xDate=new Date(now.getFullYear(),now.getMonth()-i,now.getDate());
+		
+		var month=xDate.getMonth()+1;
+		var lastBefore1=xDate.getFullYear()+&quot;_&quot;+(month&lt;10?&quot;0&quot;+month:month);
+		var lastBefore1Cell=$(&quot;#&quot;+lastBefore1).html();
+		
+		if(lastBefore1Cell){
+			lastXMonthRate+=Number(lastBefore1Cell.substring(0,lastBefore1Cell.length-1));
+		}else{
+			lastXMonthRate+=0;
+		}
+	}
+	
+	return lastXMonthRate.toFixed(2);
+}
+
+
+var sinceStartAction=view.get(&quot;#getSinceStart&quot;);
+sinceStartAction.set(&quot;parameter&quot;,account).execute();
+
+var AVGMonth=view.get(&quot;#getAVGMonth&quot;);
+AVGMonth.set(&quot;parameter&quot;,account).execute();
+
+var ProductName=view.get(&quot;#getProductName&quot;);
+ProductName.set(&quot;parameter&quot;,account).execute();
+
+
+</ClientEvent>
+    <Property name="pageUri">/webPage/performanceSummary.jsp</Property>
+    <DataSet id="detailChart">
+      <Property name="dataType">[detailDataType]</Property>
+      <Property name="dataProvider">getInfomation#getChartResult</Property>
+    </DataSet>
+    <HtmlContainer id="chartView">
+      <Property name="renderTo">#product_AA</Property>
+      <Property name="content">&lt;div id=&quot;chartContainer&quot; style=&quot;min-width: 400px; margin: 0 auto&quot;>&lt;/div></Property>
+    </HtmlContainer>
+    <HtmlContainer id="gridView">
+      <Property name="renderTo">#dataRow</Property>
+      <Property name="content">&lt;table>
+					&lt;tr class=&quot;reportbold&quot;>
+						&lt;td class=&quot;borderBottom&quot; colspan=&quot;14&quot;
+							style=&quot;padding-bottom: 10px;&quot;>&lt;strong>Gross Returns
+								Monthly [%]&lt;/strong>&lt;/td>
+					&lt;/tr>
+					&lt;tr class=&quot;backLight&quot;>
+						&lt;td class=&quot;oipBlue left&quot; style=&quot;width: 10px;&quot;>&lt;/td>
+						&lt;td class=&quot;oipBlue right&quot;>JAN&lt;/td>
+						&lt;td class=&quot;oipBlue right&quot;>FEB&lt;/td>
+						&lt;td class=&quot;oipBlue right&quot;>MAR&lt;/td>
+						&lt;td class=&quot;oipBlue right&quot;>APR&lt;/td>
+						&lt;td class=&quot;oipBlue right&quot;>MAY&lt;/td>
+						&lt;td class=&quot;oipBlue right&quot;>JUN&lt;/td>
+						&lt;td class=&quot;oipBlue right&quot;>JUL&lt;/td>
+						&lt;td class=&quot;oipBlue right&quot;>AUG&lt;/td>
+						&lt;td class=&quot;oipBlue right&quot;>SEP&lt;/td>
+						&lt;td class=&quot;oipBlue right&quot;>OCT&lt;/td>
+						&lt;td class=&quot;oipBlue right&quot;>NOV&lt;/td>
+						&lt;td class=&quot;oipBlue right&quot;>DEC&lt;/td>
+						&lt;td class=&quot;oipBlue right&quot;>YTD&lt;/td>
+					&lt;/tr>
+</Property>
+    </HtmlContainer>
+    <AjaxAction id="getSinceStart">
+      <ClientEvent name="onSuccess">view.set(&quot;#sinceStartAA.text&quot;,arg.result);
+</ClientEvent>
+      <Property name="service">getInfomation#getSinceStart</Property>
+    </AjaxAction>
+    <Label id="sinceStartAA">
+      <Property name="renderTo">#returnSinceInception</Property>
+    </Label>
+    <AjaxAction id="getAVGMonth">
+      <ClientEvent name="onSuccess">view.set(&quot;#avgMonthly.text&quot;,arg.result);
+</ClientEvent>
+      <Property name="service">getInfomation#getAverageMonthlyReturn</Property>
+    </AjaxAction>
+    <Label id="avgMonthly">
+      <Property name="renderTo">#returnAvgMonthly</Property>
+    </Label>
+    <AjaxAction id="getProductName">
+      <ClientEvent name="onSuccess">view.set(&quot;#productName.text&quot;,&quot;Performance Sheet of Product Profile  '&quot;+arg.result+&quot;'&quot;);
+</ClientEvent>
+      <Property name="service">getInfomation#getProductNameByAccount</Property>
+    </AjaxAction>
+    <Label id="productName">
+      <Property name="renderTo">#productName</Property>
+    </Label>
+  </View>
+</ViewConfig>

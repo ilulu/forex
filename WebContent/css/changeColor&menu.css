@@ -1,0 +1,160 @@
+#header {
+    margin-bottom: 10px;
+    position: relative;
+	/*background:url("../images/station/bg-ui-gradient.png") repeat-x;*/
+	width:1000px;
+	margin:auto;
+}
+#title {
+    background-image: url("images/station/kingforex.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+    line-height: 50px;
+    margin: 0 0 5px;
+    overflow: hidden;
+    position: relative;
+    text-indent: 100%;
+    width: 210px;
+}
+#title a {
+    display: block;
+}
+
+.sub-navigation ul, #meta-navigation {
+	height: 20px;
+	line-height: 20px;
+	list-style: none outside none;
+	margin-top: 0;
+	position: absolute;
+	top: 25px;
+}
+.sub-navigation ul li, #meta-navigation li {
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.sub-navigation ul li a, #meta-navigation li a {
+    
+	font-weight: bold;
+    text-decoration: none;
+}
+.sub-navigation ul li a:hover, #meta-navigation li a:hover {
+    
+	font-weight: bold;
+    text-decoration: underline;
+}
+.sub-navigation ul li a:hover, #meta-navigation li a:hover, .sub-navigation ul li.active a, #meta-navigation li.active a {
+    
+}
+.sub-navigation ul {
+    left: 271px;
+}
+.sub-navigation ul li {
+    margin-right: 1.5em;
+}
+.sub-navigation ul li li {
+    display: none;
+}
+#meta-navigation {
+    right: 0;
+}
+#meta-navigation li, #account-navigation li {
+    font-size: 12px;
+    font-weight: normal;
+    margin-left: 1.5em;
+}
+.sub-navigation ul li a.navOpenAccount, #meta-navigation li a.navOpenAccount {
+    font-size: 12px;
+    font-weight: solid;
+    margin-left: 1.5em;
+    /*text-decoration: underline;*/
+    text-transform: uppercase;
+}
+.sub-navigation ul li a.navOpenAccount:hover, #meta-navigation li a.navOpenAccount:hover, .sub-navigation ul li.active a.navOpenAccount, #meta-navigation li.active a.navOpenAccount {
+    color: #006197;
+}
+
+#account-navigation {
+    right: 0;
+    top: -50px;
+}
+
+
+/* top_title */
+.top_title {background:url(images/station/banner-abstract.png);margin-bottom:30px;position:relative;width:100%;margin:auto;}
+.top_title .text_bar_shadow {position:absolute;top:6px;left:0;width:100%;height:29px;background:url(images/station/text_bar_shadow2.png) center top no-repeat;}
+.top_title .text_bar_shadow2 {position:absolute;bottom:6px;left:0;width:100%;height:35px;background:url(images/station/text_bar_shadow3.png) center bottom no-repeat;}
+.top_title .wraper {min-height:60px;padding:29px 0 21px 0;width:100%;}
+.top_title:before {content:'';display:block;width:100%;height:0;border-top:1px solid #e7e6e6;border-bottom:5px solid #fff;}
+.top_title:after {content:'';display:block;width:100%;height:0;border-bottom:1px solid #e7e6e6;border-top:5px solid #fff;}
+.top_title h2 {text-shadow:#2c2c2c 0 1px 1px;color:#fff;font:bold 22px 'PT Sans';float:left;padding:0 36px 0 0;}
+.top_title h2 span {font-weight:normal;font-size:16px;display:block;padding-top:4px;}
+.top_title ul {position:absolute;top:88px;right:0;list-style:none;}
+.top_title ul li {float:left;color:#fff;font-size:10px;list-stye:none;}
+.top_title ul li:after {color:#fff;content:'/';padding:0 6px;}
+.top_title ul li:last-child:after {display:none;}
+.top_title ul li a {color:#fff;}
+
+
+
+/*skin*/
+#changeSkin
+{
+	border:0px solid red;
+	height:200px;
+	width:100px;
+	z-index:10;
+	position:absolute;
+	margin-top:600px;
+}
+
+#d_skinBlue
+{
+	color:#ffffff;	
+	background:#0072E3;
+	cursor:hand;
+	border:2px solid #ffffff;
+	height:50px;
+}
+#d_skinGreen
+{
+	color:#ffffff;	
+	background:#009100;
+	cursor:hand;
+	border:2px solid #ffffff;
+	height:50px;
+}
+#d_skinCoffee
+{
+	color:#ffffff;	
+	background:#8A4206;
+	cursor:hand;
+	border:2px solid #ffffff;
+	height:50px;
+}
+
+#d_skinPink
+{
+	color:#ffffff;	
+	background:#9F4D95;
+	cursor:hand;
+	border:2px solid #ffffff;
+	height:50px;
+}
+
+#d_skinAutumn
+{
+	color:#ffffff;	
+	background:#BB3D00;
+	cursor:hand;
+	border:2px solid #ffffff;
+	height:50px;
+}
+
+#d_dGcontactInfo
+{
+	margin:auto;
+	margin-top:20px;
+}
+

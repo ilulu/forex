@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="accountInfoDT">
+      <Property name="creationType">org.forex.domain.AccountInfo</Property>
+      <PropertyDef name="id">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="productName">
+        <Property name="dataType">String</Property>
+        <Property name="label">产品名称</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="filePath">
+        <Property name="dataType">String</Property>
+        <Property name="label">文件路径</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="order">
+        <Property name="dataType">int</Property>
+        <Property name="label">顺序</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="account">
+        <Property name="dataType">String</Property>
+        <Property name="label">Account</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="isable">
+        <Property name="dataType">int</Property>
+        <Property name="label">是否可用</Property>
+        <Property name="defaultValue">0</Property>
+        <Property name="mapping">
+          <Property name="mapValues">
+            <Collection>
+              <Entity>
+                <Property name="key">1</Property>
+                <Property name="value">是</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">0</Property>
+                <Property name="value">否</Property>
+              </Entity>
+            </Collection>
+          </Property>
+          <Property name="keyProperty">key</Property>
+          <Property name="valueProperty">value</Property>
+        </Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="balanceSize">
+        <Property name="label">本金代码</Property>
+      </PropertyDef>
+      <PropertyDef name="outLinkUrl">
+        <Property name="dataType">String</Property>
+        <Property name="label">外链地址</Property>
+        <Validator type="length">
+          <Property name="maxLength">200</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="minimumInvestment">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <DataSet id="accountInfoDS">
+      <Property name="dataType">[accountInfoDT]</Property>
+      <Property name="dataProvider">getInfomation#getAllAccountInfo</Property>
+    </DataSet>
+    <ToolBar id="operationBar">
+      <ToolBarButton id="flushData">
+        <ClientEvent name="onClick">view.get(&quot;#flushDataAC&quot;).execute();&#xD;
+</ClientEvent>
+        <Property name="caption">立即读取数据</Property>
+      </ToolBarButton>
+      <ToolBarButton id="flush">
+        <ClientEvent name="onClick">view.get(&quot;#accountInfoDS&quot;).flushAsync();&#xD;
+</ClientEvent>
+        <Property name="caption">刷新产品</Property>
+      </ToolBarButton>
+      <ToolBarButton id="add">
+        <ClientEvent name="onClick">var win=view.get(&quot;#operationW&quot;);&#xD;
+win.show();&#xD;
+var cuData=view.get(&quot;#accountInfoDS&quot;);&#xD;
+cuData.insert({});&#xD;
+</ClientEvent>
+        <Property name="caption">添加产品</Property>
+      </ToolBarButton>
+      <ToolBarButton id="edit">
+        <ClientEvent name="onClick">var cuData=view.get(&quot;#accountInfoDS&quot;).getData(&quot;#&quot;);&#xD;
+if(cuData){&#xD;
+	view.get(&quot;#operationW&quot;).show();&#xD;
+}&#xD;
+</ClientEvent>
+        <Property name="caption">修改产品</Property>
+      </ToolBarButton>
+      <ToolBarButton id="delete">
+        <ClientEvent name="onClick">if(confirm(&quot;确定删除当前记录?&quot;)){&#xD;
+	view.get(&quot;#accountInfoDS&quot;).getData(&quot;#&quot;).remove();&#xD;
+	view.get(&quot;#updateAC&quot;).execute();&#xD;
+}&#xD;
+</ClientEvent>
+        <Property name="caption">删除产品</Property>
+      </ToolBarButton>
+      <ToolBarButton id="disable">
+        <ClientEvent name="onClick">if(confirm(&quot;确定将当前记录修改为停用?&quot;)){&#xD;
+	var id=view.get(&quot;#accountInfoDS&quot;).getData(&quot;#.id&quot;);&#xD;
+	var changeAction=view.get(&quot;#changeIsable&quot;);&#xD;
+	changeAction.set(&quot;parameter&quot;,{id:id,able:0}).execute();&#xD;
+}&#xD;
+</ClientEvent>
+        <Property name="caption">停用产品</Property>
+      </ToolBarButton>
+      <ToolBarButton id="able">
+        <ClientEvent name="onClick">if(confirm(&quot;确定将当前记录修改为可用?&quot;)){&#xD;
+	var id=view.get(&quot;#accountInfoDS&quot;).getData(&quot;#.id&quot;);&#xD;
+	var changeAction=view.get(&quot;#changeIsable&quot;);&#xD;
+	changeAction.set(&quot;parameter&quot;,{id:id,able:1}).execute();&#xD;
+}&#xD;
+</ClientEvent>
+        <Property name="caption">启用产品</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="accountDG">
+      <Property name="dataSet">accountInfoDS</Property>
+      <Property name="dataType">accountInfoDT</Property>
+      <Property name="readOnly">true</Property>
+      <DataColumn name="productName">
+        <Property name="property">productName</Property>
+      </DataColumn>
+      <DataColumn name="filePath">
+        <Property name="property">filePath</Property>
+      </DataColumn>
+      <DataColumn name="order">
+        <Property name="property">order</Property>
+      </DataColumn>
+      <DataColumn name="account">
+        <Property name="property">account</Property>
+      </DataColumn>
+      <DataColumn name="isable">
+        <Property name="property">isable</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">balanceSize</Property>
+        <Property name="name">balanceSize</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">outLinkUrl</Property>
+        <Property name="name">outLinkUrl</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn name="minimumInvestment">
+        <Property name="property">minimumInvestment</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="operationW">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="closeable">false</Property>
+      <Property name="width">400</Property>
+      <Buttons>
+        <Button id="save">
+          <Property name="caption">保存</Property>
+          <Property name="action">updateAC</Property>
+        </Button>
+        <Button id="cancel">
+          <ClientEvent name="onClick">var cuData=view.get(&quot;#accountInfoDS.data&quot;);&#xD;
+cuData.cancel();&#xD;
+view.get(&quot;#operationW&quot;).hide();&#xD;
+</ClientEvent>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="accountInfo">
+          <Property name="dataSet">accountInfoDS</Property>
+          <Property name="dataType">accountInfoDT</Property>
+          <Property name="cols">*</Property>
+          <AutoFormElement>
+            <Property name="name">productName</Property>
+            <Property name="property">productName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">filePath</Property>
+            <Property name="property">filePath</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">order</Property>
+            <Property name="property">order</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">account</Property>
+            <Property name="property">account</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">isable</Property>
+            <Property name="property">isable</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">balanceSize</Property>
+            <Property name="name">balanceSize</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">outLinkUrl</Property>
+            <Property name="property">outLinkUrl</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">minimumInvestment</Property>
+            <Property name="property">minimumInvestment</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <UpdateAction id="updateAC">
+      <ClientEvent name="onSuccess">dorado.MessageBox.alert(&quot;操作成功&quot;);&#xD;
+view.get(&quot;#operationW&quot;).hide();&#xD;
+</ClientEvent>
+      <Property name="dataResolver">getInfomation#saveAccountInfo</Property>
+      <UpdateItem>
+        <Property name="dataSet">accountInfoDS</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <AjaxAction id="changeIsable">
+      <ClientEvent name="onSuccess">view.get(&quot;#accountInfoDS&quot;).flush();&#xD;
+</ClientEvent>
+      <Property name="service">getInfomation#changeStatus</Property>
+    </AjaxAction>
+    <AjaxAction id="flushDataAC">
+      <ClientEvent name="onSuccess">var msg=arg.result;&#xD;
+if(msg==&quot;success&quot;){&#xD;
+	msg=&quot;数据已更新&quot;;&#xD;
+}else if(msg==&quot;failure&quot;){&#xD;
+	msg=&quot;数据更新失败,请重新更新&quot;;&#xD;
+}&#xD;
+self.set(&quot;successMessage&quot;,msg);&#xD;
+arg.processDefault=true;&#xD;
+</ClientEvent>
+      <Property name="service">getInfomation#flushData</Property>
+      <Property name="successMessage">finish!!</Property>
+      <Property name="tip">loading...</Property>
+      <Property name="executingMessage">loading...</Property>
+    </AjaxAction>
+  </View>
+</ViewConfig>

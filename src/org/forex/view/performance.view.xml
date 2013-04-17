@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="accountBaseDT">
+      <Property name="creationType">org.forex.domain.AccountBaseInfo</Property>
+      <PropertyDef name="id">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="account">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="currency">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="currentDate">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="deposit">
+        <Property name="dataType">double</Property>
+      </PropertyDef>
+      <PropertyDef name="closeTrade">
+        <Property name="dataType">double</Property>
+      </PropertyDef>
+      <PropertyDef name="currentMonth">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="currentYearToDate">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="sinceStart">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="annualisedReturn">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="totalReturn">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="avgMonthlyReturn">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="startOfRealPerformance">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="initialCaptial">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="productName">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="outLinkUrl">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="minimumInvestment">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="detailDataType">
+      <PropertyDef name="dm">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="profitRate">
+        <Property name="dataType">double</Property>
+      </PropertyDef>
+      <PropertyDef name="totalRate">
+        <Property name="dataType">double</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <ClientEvent name="onReady">var now = new Date();
+var nowTime = now.getFullYear() + &quot;-&quot; + (now.getMonth() + 1) + &quot;-&quot; + now.getDate() + &quot; &quot; + now.getHours() + &quot;:&quot; + now.getMinutes() + &quot;:&quot; + now.getSeconds() + &quot; GMT&quot;;
+var accountDS = self.get(&quot;#accountDS&quot;);
+var accountInfoContent = self.get(&quot;#accountInfo&quot;);
+
+var detailChartDS = self.get(&quot;#detailChart&quot;);
+
+
+
+accountDS.flushAsync(function(){
+    var result = accountDS.get(&quot;data&quot;);
+    var recordIte = result.iterator();
+    var innerHTML = &quot;&quot;;
+    while (recordIte.hasNext()) {
+        var record = recordIte.next();
+        innerHTML += &quot;&lt;h3 class=\&quot;table-title\&quot; style=\&quot;width:100%;\&quot;>&quot; +
+        &quot;&lt;span>&lt;a href=\&quot;performanceDetail.d?name=&quot; +
+        record.get(&quot;account&quot;) +
+        &quot;\&quot;>&quot; +
+        record.get(&quot;productName&quot;) +
+        &quot;&lt;/a>&lt;/span> &lt;span&quot; +
+        &quot; class=\&quot;right\&quot; >&lt;a href=\&quot;performanceDetail.d?name=&quot; +
+        record.get(&quot;account&quot;)+
+        &quot;\&quot;>go to the &quot; +
+        &quot;Performance Report&lt;/a>&lt;/span>&quot; +
+        &quot;&lt;/h3>&quot; +
+        &quot;&lt;div class=\&quot;title_month\&quot; style=\&quot;padding-right:0px;float: right;width: 460px;\&quot;>&quot; +
+        &quot;	&lt;span style=\&quot;float: right;padding-right:12px;\&quot;>&lt;strong>12-month rolling&quot; +
+        &quot;			return&lt;/strong>&lt;/span>&lt;br />&quot; +
+        &quot;	&lt;div class=\&quot;product_chat\&quot; id=\&quot;product_&quot; +
+        record.get(&quot;account&quot;) +
+        &quot;\&quot;>&quot; +
+        &quot;		&lt;iframe frameborder='no' width='100%' height='220px' src=\&quot;RollingCharts.d?name=&quot;+record.get(&quot;account&quot;)+&quot;\&quot;>&lt;/iframe>&quot; +
+        &quot;					&lt;/div>&quot; +
+        &quot;				&lt;/div>&quot; +
+        &quot;				&lt;div style=\&quot;width: 300px;\&quot;>&quot; +
+        &quot;					&lt;table border=\&quot;0\&quot; class=\&quot;reporttable\&quot;>&quot; +
+        &quot;						&lt;tbody>&quot; +
+        &quot;							&lt;tr class=\&quot;doctableRowLight\&quot;>&quot; +
+        &quot;								&lt;td>&lt;strong>General&lt;/strong>&lt;/td>&quot; +
+        &quot;								&lt;td>&amp;nbsp;&lt;/td>&quot; +
+        &quot;							&lt;/tr>&quot; +
+        &quot;							&lt;tr class=\&quot;doctableRowLight\&quot;>&quot; +
+        &quot;								&lt;td>Start of real performance&lt;/td>&quot; +
+        &quot;								&lt;td class=\&quot;right\&quot;>&quot; +
+        record.get(&quot;startOfRealPerformance&quot;) +
+        &quot;&lt;/td>&quot; +
+        &quot;							&lt;/tr>&quot; +
+        &quot;							&lt;tr class=\&quot;doctableRowLight\&quot;>&quot; +
+        &quot;								&lt;td>Initial capital&lt;/td>&quot; +
+        &quot;								&lt;td class=\&quot;right\&quot;>&quot; +
+        record.get(&quot;initialCaptial&quot;) +
+        &quot;&lt;/td>&quot; +
+        &quot;							&lt;/tr>&quot; +
+        &quot;							&lt;tr class=\&quot;doctableRowLight\&quot;>&quot; +
+        &quot;								&lt;td>&lt;strong>Returns, &quot; +
+        nowTime +
+        &quot;&lt;/strong>&lt;/td>&quot; +
+        &quot;								&lt;td class=\&quot;right\&quot;>&amp;nbsp;&lt;/td>&quot; +
+        &quot;				     &lt;/tr>&quot; +
+        &quot;							&lt;tr>&quot; +
+        &quot;								&lt;td>Current month&lt;/td>&quot; +
+        &quot;								&lt;td class=\&quot;right\&quot;>&quot; +
+        record.get(&quot;currentMonth&quot;) +
+        &quot;&lt;/td>&quot; +
+        &quot;							&lt;/tr>&quot; +
+        &quot;							&lt;tr>&quot; +
+        &quot;								&lt;td>Current year to date&lt;/td>&quot; +
+        &quot;								&lt;td class=\&quot;right\&quot;>&quot; +
+        record.get(&quot;currentYearToDate&quot;) +
+        &quot;&lt;/td>&quot; +
+        &quot;							&lt;/tr>&quot; +
+        &quot;							&lt;tr>&quot; +
+        &quot;								&lt;td style=\&quot;color: #006197; font-style: italic;\&quot;>Since start&lt;/td>&quot; +
+        &quot;								&lt;td class=\&quot;right\&quot;>&quot; +
+        record.get(&quot;sinceStart&quot;) +
+        &quot;&lt;/td>&quot; +
+        &quot;							&lt;/tr>&quot; +
+
+        &quot;							&lt;tr>&quot; +
+        &quot;								&lt;td>Total return&lt;/td>&quot; +
+        &quot;								&lt;td class=\&quot;right\&quot;>&quot; +
+        record.get(&quot;totalReturn&quot;) +
+        &quot;&lt;/td>&quot; +
+        &quot;							&lt;/tr>&quot; +
+        &quot;							&lt;tr>&quot; +
+        &quot;								&lt;td>Average monthly return&lt;/td>&quot; +
+        &quot;								&lt;td class=\&quot;right\&quot;>&quot; +
+        record.get(&quot;avgMonthlyReturn&quot;) +
+        &quot;&lt;/td>&quot; +
+        &quot;							&lt;/tr>&quot; +
+		&quot;							&lt;tr>&quot;+
+		&quot;								&lt;td>Minimum Investment&lt;/td>&quot;+
+		&quot;								&lt;td class=\&quot;right\&quot;>&quot;+record.get(&quot;minimumInvestment&quot;)+&quot;&lt;/td>&quot;+
+		&quot;							&lt;/tr>&quot;+
+		&quot;							&lt;tr>&quot;+
+		&quot;								&lt;td colspan=2>&lt;a href=&quot;+record.get(&quot;outLinkUrl&quot;)+&quot; target=\&quot;_blank\&quot; >Third Party Verified Report: Myfxbook&lt;/a>&lt;/td>&quot;+
+		&quot;							&lt;/tr>&quot;+
+        &quot;						&lt;/tbody>&quot; +
+        &quot;					&lt;/table>&quot; +
+        &quot;				&lt;/div>&quot;;
+        
+		
+    }    
+	accountInfoContent.set(&quot;content&quot;,innerHTML);
+	//designChart();
+});
+
+
+</ClientEvent>
+    <Property name="pageUri">/webPage/performance.jsp</Property>
+    <DataSet id="detailChart">
+      <Property name="dataType">[detailDataType]</Property>
+      <Property name="dataProvider">getInfomation#getChartResult</Property>
+    </DataSet>
+    <DataSet id="accountDS">
+      <Property name="dataProvider">getInfomation#getAllAccountBaseInfos</Property>
+      <Property name="dataType">[accountBaseDT]</Property>
+    </DataSet>
+    <HtmlContainer id="accountInfo">
+      <Property name="renderTo">#accountInfos</Property>
+    </HtmlContainer>
+    <AjaxAction id="getCurrentMonthAA">
+      <ClientEvent name="onSuccess">view.set(&quot;#currentMonthAA.text&quot;,arg.result);
+</ClientEvent>
+      <Property name="service">getInfomation#getCurrentMonth</Property>
+    </AjaxAction>
+    <AjaxAction id="getCurrentYearToDateAA">
+      <ClientEvent name="onSuccess">view.set(&quot;#currentYearToDateAA.text&quot;,arg.result);</ClientEvent>
+      <Property name="service">getInfomation#getCurrentYearToDate</Property>
+    </AjaxAction>
+    <AjaxAction id="getSinceStart">
+      <ClientEvent name="onSuccess">view.set(&quot;#sinceStartAA.text&quot;,arg.result);</ClientEvent>
+      <Property name="service">getInfomation#getSinceStart</Property>
+    </AjaxAction>
+    <AjaxAction id="getAnnualisedReturnAA">
+      <ClientEvent name="onSuccess">view.set(&quot;#annualisedReturnAA.text&quot;,arg.result);
+</ClientEvent>
+      <Property name="service">getInfomation#getAnnualisedReturn</Property>
+      <Property name="ignored">true</Property>
+    </AjaxAction>
+    <AjaxAction id="getTotalReutrnAA">
+      <ClientEvent name="onSuccess">view.set(&quot;#totalReutrnAA.text&quot;,arg.result);
+</ClientEvent>
+      <Property name="service">getInfomation#getTotalReutrn</Property>
+    </AjaxAction>
+    <AjaxAction id="getAverageMonthlyReturn">
+      <ClientEvent name="onSuccess">view.set(&quot;#averageMonthlyReturn.text&quot;,arg.result);
+</ClientEvent>
+      <Property name="service">getInfomation#getAverageMonthlyReturn</Property>
+    </AjaxAction>
+    <Label id="currentMonthAA">
+      <Property name="renderTo">#currentMonth</Property>
+    </Label>
+    <Label id="currentYearToDateAA">
+      <Property name="renderTo">#yearToDate</Property>
+    </Label>
+    <Label id="sinceStartAA">
+      <Property name="renderTo">#sinceStart</Property>
+    </Label>
+    <Label id="annualisedReturnAA">
+      <Property name="renderTo">#annualisedReturn</Property>
+      <Property name="ignored">true</Property>
+    </Label>
+    <Label id="totalReutrnAA">
+      <Property name="renderTo">#totalReturn</Property>
+    </Label>
+    <Label id="averageMonthlyReturn">
+      <Property name="renderTo">#averageMonthlyReturn</Property>
+    </Label>
+    <AjaxAction id="getStartOfRealAA">
+      <ClientEvent name="onSuccess">view.set(&quot;#startOfRealAA.text&quot;,arg.result);&#xD;
+</ClientEvent>
+      <Property name="service">getInfomation#getStartOfRealPerformance</Property>
+    </AjaxAction>
+    <AjaxAction id="getInitalCaptialAA">
+      <ClientEvent name="onSuccess">view.set(&quot;#initalCaptialAA.text&quot;,arg.result);&#xD;
+</ClientEvent>
+      <Property name="service">getInfomation#getInitialCaptial</Property>
+    </AjaxAction>
+    <Label id="startOfRealAA">
+      <Property name="renderTo">#startOfReal</Property>
+    </Label>
+    <Label id="initalCaptialAA">
+      <Property name="renderTo">#initialCaptial</Property>
+    </Label>
+  </View>
+</ViewConfig>

@@ -1,0 +1,78 @@
+/*a {
+    color: #006197;
+}*/
+
+/*top menu*/
+.sub-navigation ul li a, #meta-navigation li a {
+   color: #009100;
+}
+.sub-navigation ul li a:hover, #meta-navigation li a:hover {
+   color: #009100;
+
+}
+.sub-navigation ul li a:hover, #meta-navigation li a:hover, .sub-navigation ul li.active a, #meta-navigation li.active a {
+   color: #009100;
+}
+/*left menu*/
+#navigation li.active a {
+    color:#009100;
+}
+#navigation ul li a:hover{
+    color:#009100;
+}
+/*text*/
+#text h1 {
+    color: #009100;
+}
+h2 {
+    color: #009100;
+}
+#text table th {
+    color: #009100;
+}
+#text.wide h3.table-title {
+	color: #009100;
+}
+#text.large h3.table-title {
+	color: #009100;
+}
+#text table td strong, #text table tr.tableHead td {
+    color: #009100;
+}
+/*top_title background*/
+.top_title_out{
+	background-image:url(../images/skins/bg-banner-green.png);
+	width:1000px;
+	margin:auto;
+	}
+/*content table title*/
+h3.table-title, h3.table-title-alone {
+    color: #FFFFFF;/*表格标题*/
+}
+h3.table-title-small {
+    color: #FFFFFF;
+}
+h3.table-title-small a {
+    color: #FFFFFF;
+}
+h3.table-title-big {
+	color: #FFFFFF;
+}
+h3.table-title a {
+    color: #FFFFFF;
+}
+h3.label {
+    color: #FFFFFF;
+}
+h3.table-title, h3.table-title-alone {
+    background:#009100;
+}
+/*footer background*/
+.footer_out{
+/*background-image:url(../images/skins/bg-banner-green.png);*/
+border-top:2px solid #009100;
+color:#FFFFFF;
+width:1000px;
+margin:auto;
+	}
+/**/

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     www.BSTEK.com                                                                
+     ====================================================================== -->
+<project name="DoradoProject" default="package">
+
+	<property file="${basedir}/build.properties" />
+
+	<target name="init" depends="clean">
+		<mkdir dir="${war.dir}" />
+		<mkdir dir="${war.dir}/WebContent" />
+		<copy todir="${war.dir}/WebContent">
+			<fileset dir="${web.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+		<copy overwrite="true" todir="${war.dir}/WebContent/WEB-INF/dorado-home">
+			<fileset dir="${basedir}">
+				<include name="configure.properties" />
+				<include name="datasources_test.xml" />
+			</fileset>
+		</copy>
+	</target>
+	
+	<!-- ================================================================== -->
+	<!-- Make Dorado Web Project war file                                   -->
+	<!-- ================================================================== -->
+	<target name="war" depends="init">
+		<war destfile="${war.dir}/${final.name}.war" webxml="${war.dir}/WebContent/WEB-INF/web.xml">
+			<fileset dir="${war.dir}/WebContent" />
+			<zipfileset prefix="WEB-INF/classes" dir="${build.dir}/classes" />
+		</war>
+	</target>
+
+	<!-- ================================================================== -->
+	<!-- Clean Dorado build file                                   			-->
+	<!-- ================================================================== -->
+
+	<target name="clean">
+		<delete dir="${war.dir}/*" />
+	</target>
+
+	<target name="depoly" depends="war">
+		<sshexec host="test.bsdn.org" port="7722" username="root"  password="anti-phishing"
+		         trust="true" command="cd /usr/local/tomcat/webapps;rm -rf ${final.name} ${final.name}.war"/>
+		
+		<scp port="7722" file="${war.dir}/${final.name}.war" todir="root@test.bsdn.org:/usr/local/tomcat/webapps/${final.name}.war" 
+						password="anti-phishing"
+							trust="true" />
+	</target>
+	
+
+	<target name="package" depends="clean,init,war">
+		<echo>Mission Complete!</echo>
+	</target>
+</project>

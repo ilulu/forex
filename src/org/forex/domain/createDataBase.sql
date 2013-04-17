@@ -1,0 +1,131 @@
+--==================================================
+-- DBMS Name:   MySql
+-- Created Date:  2013-04-01 23:45:39
+-- Created User:  ilulu
+--==================================================
+
+/* Drop Tables */
+
+DROP TABLE accountbaseinfo;
+DROP TABLE forex_system;
+DROP TABLE accounttransactionsinfo;
+DROP TABLE forex_contactus;
+DROP TABLE accountinfo;
+
+/* Create Tables */
+
+-- accountbaseinfo:
+CREATE TABLE accountbaseinfo
+(
+	-- ID_: 主键
+	ID_ VARCHAR(40) NOT NULL COMMENT '主键',
+	-- ACCOUNT_: 账户名
+	ACCOUNT_ VARCHAR(40) COMMENT '账户名',
+	-- NAME_
+	NAME_ VARCHAR(40) ,
+	-- CURRENCY_
+	CURRENCY_ VARCHAR(40) ,
+	-- CURRENTDATE_
+	CURRENTDATE_ DATE ,
+	-- DEPOSIT_
+	DEPOSIT_ DOUBLE(22,0) ,
+	-- CLOSETRADE_
+	CLOSETRADE_ DOUBLE(22,0) ,
+	PRIMARY KEY (ID_)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+-- forex_system:
+CREATE TABLE forex_system
+(
+	-- SYSTEMID
+	SYSTEMID VARCHAR(36) NOT NULL,
+	-- SYSTEMKEY
+	SYSTEMKEY VARCHAR(20) ,
+	-- SYSTEMCODE
+	SYSTEMCODE VARCHAR(100) ,
+	-- REMARK
+	REMARK VARCHAR(200) ,
+	PRIMARY KEY (SYSTEMID)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+-- accounttransactionsinfo:
+CREATE TABLE accounttransactionsinfo
+(
+	-- ID_
+	ID_ VARCHAR(40) NOT NULL,
+	-- ACCOUNT_ID_
+	ACCOUNT_ID_ VARCHAR(40) ,
+	-- TICKET_
+	TICKET_ VARCHAR(40) ,
+	-- OPENTIME_
+	OPENTIME_ TIMESTAMP NOT NULL,
+	-- TYPE_
+	TYPE_ VARCHAR(40) ,
+	-- SIZE_
+	SIZE_ VARCHAR(40) ,
+	-- ITEM_
+	ITEM_ VARCHAR(40) ,
+	-- OPENPRICE_
+	OPENPRICE_ DOUBLE(22,0) ,
+	-- SL_
+	SL_ DOUBLE(22,0) ,
+	-- TP_
+	TP_ DOUBLE(22,0) ,
+	-- CLOASTIME_
+	CLOASTIME_ TIMESTAMP NOT NULL,
+	-- CLOSEPRICE_
+	CLOSEPRICE_ DOUBLE(22,0) ,
+	-- COMMISSION_
+	COMMISSION_ DOUBLE(22,0) ,
+	-- TAXES_
+	TAXES_ DOUBLE(22,0) ,
+	-- SWAP_
+	SWAP_ DOUBLE(22,0) ,
+	-- PROFIT_: 利润
+	PROFIT_ DOUBLE(22,0) COMMENT '利润',
+	PRIMARY KEY (ID_)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+-- forex_contactus:
+CREATE TABLE forex_contactus
+(
+	-- ID
+	ID VARCHAR(36) NOT NULL,
+	-- NAME
+	NAME VARCHAR(20) ,
+	-- PHONE
+	PHONE VARCHAR(20) ,
+	-- EMAIL
+	EMAIL VARCHAR(50) ,
+	-- COMMENTS
+	COMMENTS VARCHAR(3000) ,
+	PRIMARY KEY (ID)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+-- accountinfo:
+CREATE TABLE accountinfo
+(
+	-- ID_
+	ID_ VARCHAR(40) NOT NULL,
+	-- PRODUCT_NAME_
+	PRODUCT_NAME_ VARCHAR(40) ,
+	-- FILE_PATH_
+	FILE_PATH_ VARCHAR(300) ,
+	-- ORDER_
+	ORDER_ INT(10) ,
+	-- ACCOUNT_
+	ACCOUNT_ VARCHAR(40) ,
+	-- ISABLE_
+	ISABLE_ INT(10) ,
+	-- BALANCE_SIZE_
+	BALANCE_SIZE_ VARCHAR(100) ,
+	-- OUT_LINK_URL_
+	OUT_LINK_URL_ VARCHAR(200) ,
+	-- Minimum Investment
+	MINIMUM_INVESTMENT VARCHAR(200) DEFAULT '0',
+	PRIMARY KEY (ID_)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
+
+/* Create Foreign Keys */
+

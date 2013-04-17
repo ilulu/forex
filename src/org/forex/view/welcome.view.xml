@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View name="view1">
+    <ClientEvent name="onReady">var changeSkin=function(){&#xD;
+	alert(11);&#xD;
+}&#xD;
+</ClientEvent>
+    <Property name="pageUri">/pages/welcome.jsp</Property>
+    <HtmlContainer id="HtmlContainerSkin1">
+      <Property name="renderTo">#changeSkin</Property>
+      <Property name="ignored">true</Property>
+      <Label id="skinBlue1">
+        <ClientEvent name="onClick">var changeSkinAction = view.get(&quot;#changeSkinAction&quot;);&#xD;
+var params=&#xD;
+{&#xD;
+	systemcode:&quot;blue&quot;&#xD;
+}&#xD;
+changeSkinAction.set(&quot;parameter&quot;,params);&#xD;
+changeSkinAction.execute();&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+        <Property name="text">to blue</Property>
+        <Property name="width">100</Property>
+      </Label>
+      <Label id="skinGreen1">
+        <ClientEvent name="onClick">var changeSkinAction = view.get(&quot;#changeSkinAction&quot;);&#xD;
+var params=&#xD;
+{&#xD;
+	systemcode:&quot;green&quot;&#xD;
+}&#xD;
+changeSkinAction.set(&quot;parameter&quot;,params);&#xD;
+changeSkinAction.execute();&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+        <Property name="text">to green</Property>
+        <Property name="width">100</Property>
+      </Label>
+      <Label id="skinCoffee1">
+        <ClientEvent name="onClick">var changeSkinAction = view.get(&quot;#changeSkinAction&quot;);&#xD;
+var params=&#xD;
+{&#xD;
+	systemcode:&quot;coffee&quot;&#xD;
+}&#xD;
+changeSkinAction.set(&quot;parameter&quot;,params);&#xD;
+changeSkinAction.execute();&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+        <Property name="text">to coffee</Property>
+        <Property name="width">100</Property>
+      </Label>
+      <Label id="skinPink1">
+        <ClientEvent name="onClick">var changeSkinAction = view.get(&quot;#changeSkinAction&quot;);&#xD;
+var params=&#xD;
+{&#xD;
+	systemcode:&quot;pink&quot;&#xD;
+}&#xD;
+changeSkinAction.set(&quot;parameter&quot;,params);&#xD;
+changeSkinAction.execute();&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+        <Property name="text">to pink</Property>
+        <Property name="width">100</Property>
+      </Label>
+      <Label id="skinAutumn1">
+        <ClientEvent name="onClick">var changeSkinAction = view.get(&quot;#changeSkinAction&quot;);&#xD;
+var params=&#xD;
+{&#xD;
+	systemcode:&quot;autumn&quot;&#xD;
+}&#xD;
+changeSkinAction.set(&quot;parameter&quot;,params);&#xD;
+changeSkinAction.execute();&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+        <Property name="text">to autumn</Property>
+        <Property name="width">100</Property>
+      </Label>
+    </HtmlContainer>
+    <AjaxAction id="changeSkinAction">
+      <ClientEvent name="onSuccess">alert(&quot;Congratulations!Website's skin has been changed successfully!&quot;);&#xD;
+window.location.reload();&#xD;
+</ClientEvent>
+      <Property name="service">loadSkin#changeSkin</Property>
+      <Property name="parameter"></Property>
+    </AjaxAction>
+  </View>
+</ViewConfig>

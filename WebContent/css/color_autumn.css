@@ -1,0 +1,73 @@
+/*a {
+    color: #006197;
+}*/
+
+/*top menu*/
+.sub-navigation ul li a, #meta-navigation li a {
+   color: #BB3D00;
+}
+.sub-navigation ul li a:hover, #meta-navigation li a:hover {
+   color: #BB3D00;
+
+}
+.sub-navigation ul li a:hover, #meta-navigation li a:hover, .sub-navigation ul li.active a, #meta-navigation li.active a {
+   color: #BB3D00;
+}
+/*left menu*/
+#navigation li.active a {
+    color:#BB3D00;
+}
+#navigation ul li a:hover{
+    color:#BB3D00;
+}
+/*text*/
+#text h1 {
+    color: #BB3D00;
+}
+h2 {
+    color: #BB3D00;
+}
+#text table th {
+    color: #BB3D00;
+}
+#text.wide h3.table-title {
+	color: #BB3D00;
+}
+#text.large h3.table-title {
+	color: #BB3D00;
+}
+#text table td strong, #text table tr.tableHead td {
+    color: #BB3D00;
+}
+/*top_title background*/
+.top_title_out{background-image:url(../images/skins/bg-banner-autumn.png);}
+/*content table title*/
+h3.table-title, h3.table-title-alone {
+    color: #FFFFFF;/*表格标题*/
+}
+h3.table-title-small {
+    color: #FFFFFF;
+}
+h3.table-title-small a {
+    color: #FFFFFF;
+}
+h3.table-title-big {
+	color: #FFFFFF;
+}
+h3.table-title a {
+    color: #FFFFFF;
+}
+h3.label {
+    color: #BB3D00;
+}
+h3.table-title, h3.table-title-alone {
+    background:#BB3D00;
+}
+/*footer background*/
+.footer_out{/*background-image:url(../images/skins/bg-banner-green.png);*/
+border-top:2px solid #BB3D00;
+color:#FFFFFF;
+width:1000px;
+margin:auto;}
+
+/**/

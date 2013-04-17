@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View name="view1">
+    <Property name="pageUri">/pages/contactus.jsp</Property>
+    <AjaxAction id="saveContactInfo">
+      <ClientEvent name="onSuccess">alert(&quot;Thanks for you cooperation!&quot;);&#xD;
+document.getElementById(&quot;name&quot;).value=&quot;&quot;;&#xD;
+document.getElementById(&quot;email&quot;).value=&quot;&quot;;&#xD;
+document.getElementById(&quot;comments&quot;).value=&quot;&quot;;&#xD;
+</ClientEvent>
+      <Property name="service">contactUsMan#saveContactInfo</Property>
+      <Property name="executingMessage">Saving...</Property>
+    </AjaxAction>
+    <Button id="submit">
+      <ClientEvent name="onClick">var contactAction = view.get(&quot;#saveContactInfo&quot;);&#xD;
+&#xD;
+var name = document.getElementById(&quot;name&quot;).value;&#xD;
+var email = document.getElementById(&quot;email&quot;).value;&#xD;
+var comments = document.getElementById(&quot;comments&quot;).value;&#xD;
+&#xD;
+if(name.replace(/^\s+|\s+$/g, '')==&quot;&quot; || email.replace(/^\s+|\s+$/g, '')==&quot;&quot;){&#xD;
+	alert(&quot;Please at least input your name and email address!&quot;);&#xD;
+	return false;&#xD;
+}&#xD;
+&#xD;
+var params=&#xD;
+{&#xD;
+	name:name,&#xD;
+	email:email,&#xD;
+	comments:comments&#xD;
+}&#xD;
+contactAction.set(&quot;parameter&quot;,params);&#xD;
+contactAction.execute();&#xD;
+</ClientEvent>
+      <Property name="caption">submit</Property>
+      <Property name="renderTo">#submitInfo</Property>
+      <Property name="className">submit tt-form-submit</Property>
+      <Property name="height">10</Property>
+    </Button>
+  </View>
+</ViewConfig>

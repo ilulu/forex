@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="detailDataType">
+      <PropertyDef name="dm">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="profitRate">
+        <Property name="dataType">double</Property>
+      </PropertyDef>
+      <PropertyDef name="totalRate">
+        <Property name="dataType">double</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <ClientEvent name="onReady">var detailChartDS=self.get(&quot;#detailChart&quot;);&#xD;
+&#xD;
+    var account=&quot;${request.getParameter('name')}&quot;;&#xD;
+    detailChartDS.set(&quot;parameter&quot;,{&#xD;
+        account: account,&#xD;
+        isRolling: true&#xD;
+    }).flush();&#xD;
+    var list = detailChartDS.get(&quot;data&quot;);&#xD;
+    var xAxis = [];&#xD;
+    var yData = [];&#xD;
+    var yLabel = [];&#xD;
+    var yAxis = [{&#xD;
+        name: &quot;Return&quot;,&#xD;
+        data: yData,&#xD;
+    }];&#xD;
+    var ite = list.iterator();&#xD;
+    while (ite.hasNext()) {&#xD;
+        var entity = ite.next();&#xD;
+        xAxis.push(entity.get(&quot;dm&quot;));&#xD;
+        yLabel.push(entity.get(&quot;profitRate&quot;) * 100)&#xD;
+        yData.push(entity.get(&quot;totalRate&quot;) * 100);&#xD;
+    }    &#xD;
+	var getIndex = function(data){&#xD;
+        for (var i = 0; i &lt; yData.length; i++) {&#xD;
+            if (yData[i] == data) {&#xD;
+                return i;&#xD;
+            }        &#xD;
+		}    &#xD;
+	}    &#xD;
+	var chart = new Highcharts.Chart({&#xD;
+        chart: {&#xD;
+            renderTo: 'chartDiv',&#xD;
+            type: 'line',&#xD;
+            marginRight: 130,&#xD;
+            marginBottom: 25,&#xD;
+            height: 220&#xD;
+        },&#xD;
+        &#xD;
+        title: {&#xD;
+            text: 'Monthly Cumulated Gross Return [%]',&#xD;
+            x: -20 //center&#xD;
+        },&#xD;
+        &#xD;
+        subtitle: {&#xD;
+            text: ' ',&#xD;
+            x: -20&#xD;
+        },&#xD;
+        xAxis: {&#xD;
+            categories: xAxis,&#xD;
+            tickInterval: 3&#xD;
+        },&#xD;
+        yAxis: {&#xD;
+            title: {&#xD;
+                text: ' '&#xD;
+            },&#xD;
+            plotLines: [{&#xD;
+                value: 0,&#xD;
+                width: 1,&#xD;
+                color: '#808080'&#xD;
+            }]&#xD;
+        },&#xD;
+        tooltip: {&#xD;
+            formatter: function(){&#xD;
+                return '&lt;b>' + this.x + '&lt;/b>&lt;br/>' +&#xD;
+                &quot;ROI:&lt;b>Month:&quot; +&#xD;
+                (yLabel[getIndex(this.y)]).toFixed(2) +&#xD;
+                &quot;% Cumulative&quot; +&#xD;
+                ': ' +&#xD;
+                (this.y).toFixed(2) +&#xD;
+                &quot;%&lt;b>&quot;;&#xD;
+            }        },&#xD;
+			plotOptions: {&#xD;
+				line: {&#xD;
+					marker: {&#xD;
+						enabled: true&#xD;
+					}				&#xD;
+				}&#xD;
+            },&#xD;
+        legend: {&#xD;
+            layout: 'vertical',&#xD;
+            align: 'right',&#xD;
+            verticalAlign: 'top',&#xD;
+            x: -10,&#xD;
+            y: 100,&#xD;
+            borderWidth: 0&#xD;
+        },&#xD;
+        series: yAxis&#xD;
+    });&#xD;
+    </ClientEvent>
+    <Property name="javaScriptFile">/js/highcharts.js,/js/exporting.js</Property>
+    <DataSet id="detailChart">
+      <Property name="dataType">[detailDataType]</Property>
+      <Property name="dataProvider">getInfomation#getChartResult</Property>
+    </DataSet>
+    <HtmlContainer id="chartContainer">
+      <Property name="content">&lt;div id=&quot;chartDiv&quot;>&lt;/div></Property>
+    </HtmlContainer>
+  </View>
+</ViewConfig>
