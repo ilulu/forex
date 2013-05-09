@@ -125,11 +125,7 @@
 					<a class="anchorsTop" href="#">Back to top</a>
 				</h4>
 				<div style="margin-top: 30px;" class="center">
-    <a href='media/Invest_TermsUse.pdf'>Terms of use</a> 
-    &nbsp;&nbsp;&nbsp;
-    <a href='media/Invest_Disclaimer.pdf'>Hypothetical Results Disclaimer</a>  
-    &nbsp;&nbsp;&nbsp;
-    <a href='media/PrivacyPolicy.pdf'>Privacy Policy</a></div>
+    </div>
 </div>
 			</div>
 		</div>

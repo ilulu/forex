@@ -40,7 +40,7 @@ import com.bstek.dorado.data.entity.EntityUtils;
 public class GetInfomation {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
+
 	@Autowired
 	private LoadHtm loadHtm;
 
@@ -53,14 +53,30 @@ public class GetInfomation {
 	 */
 	private double getCapital(String account) throws Exception {
 		double returnValue = 0d;
-		String sql = "select t1.profit_ from ACCOUNTTRANSACTIONSINFO t1 left join ACCOUNTINFO t2 on t1.ACCOUNT_ID_=t2.ACCOUNT_ where account_ID_='"
-				+ account
-				+ "'"
-				+ " and t1.type_='balance' and t1.size_ =t2.BALANCE_SIZE_  order by opentime_,ticket_ limit 1";
-		List result = jdbcTemplate.queryForList(sql);
-		if (result.size() > 0) {
-			Map record = (Map) result.get(0);
-			returnValue = (Double) record.get("profit_");
+
+		String sqlForCode = "select BALANCE_SIZE_ from accountinfo where ACCOUNT_='"
+				+ account + "'";
+		List resultForCode = jdbcTemplate.queryForList(sqlForCode);
+		if (resultForCode.size() > 0) {
+			String balanceSizes=(String)((Map)resultForCode.get(0)).get("BALANCE_SIZE_");
+			String[] balanceCodes=balanceSizes.split("\\|");
+			String size="";
+			for(int i=0;i<balanceCodes.length;i++){
+				size+="'"+balanceCodes[i]+"'";
+				if(i+1<balanceCodes.length){
+					size+=",";
+				}
+			}
+			String sql = "select sum(t1.profit_) as profit_ from ACCOUNTTRANSACTIONSINFO t1 where account_ID_='"
+					+ account
+					+ "'"
+					+ " and t1.type_='balance' and t1.size_ in ("+size+")  order by opentime_,ticket_ limit 1";
+			
+			List result = jdbcTemplate.queryForList(sql);
+			if (result.size() > 0) {
+				Map record = (Map) result.get(0);
+				returnValue = (Double) record.get("profit_");
+			}
 		}
 		return returnValue;
 	}
@@ -181,14 +197,13 @@ public class GetInfomation {
 	 */
 	@Expose
 	public String getAnnualisedReturn(String account) throws Exception {
-		String currentYearToDate = getTotalReutrn(account).replace("%",
-				"");
+		String currentYearToDate = getTotalReutrn(account).replace("%", "");
 		double annualisedReturn = (Double.parseDouble(currentYearToDate) / 100)
-				/ AppUtil.getLostDayFromIn(getStartOfRealPerformance(account)) * 365;
+				/ AppUtil.getLostDayFromIn(getStartOfRealPerformance(account))
+				* 365;
 		return String.valueOf(AppUtil.getRoundUp(annualisedReturn * 100, 2))
 				+ "%";
 	}
-	
 
 	/**
 	 * 获取totalReturn的值 total return 跟since start的值是一样的
@@ -301,7 +316,7 @@ public class GetInfomation {
 		Boolean isRolling = (Boolean) param.get("isRolling");
 
 		String sqlFunds = "select * from accountinfo where 1=1";
-		String sqlDespoit = "SELECT profit_ FROM accounttransactionsinfo \n"
+		String sqlDespoit = "SELECT sum(profit_) as profit_ FROM accounttransactionsinfo \n"
 				+ "WHERE 1=1";
 		if (StringUtils.isNotEmpty(account)) {
 			sqlDespoit += " and ACCOUNT_ID_='" + account + "'";
@@ -312,10 +327,17 @@ public class GetInfomation {
 				new AccountInfoRowMapper());
 		String funds = "";
 		if (fundList.size() > 0) {
-			funds = fundList.get(0).getBalanceSize();
+			String[] fund = fundList.get(0).getBalanceSize().split("\\|");
+			for(int i=0;i<fund.length;i++){
+				funds+="'"+fund[i]+"'";
+				if(i+1<fund.length){
+					funds+=",";
+				}
+			}
+			
 		}
 
-		sqlDespoit += " AND TYPE_='balance' and SIZE_ in ('" + funds + "')\n"
+		sqlDespoit += " AND TYPE_='balance' and SIZE_ in (" + funds + ")\n"
 				+ "order by OPENTIME_,TICKET_ limit 1";
 
 		String sql = "select \n"
@@ -339,14 +361,16 @@ public class GetInfomation {
 		if (isRolling != null && isRolling) {
 			Calendar cal = Calendar.getInstance();
 			int year = cal.get(Calendar.YEAR);
-			int month = cal.get(Calendar.MONTH)+1;
-			String cudm = String.valueOf(year)+"-"
+			int month = cal.get(Calendar.MONTH) + 1;
+			String cudm = String.valueOf(year)
+					+ "-"
 					+ (month < 10 ? "0" + String.valueOf(month) : String
 							.valueOf(month));
 			cal.add(Calendar.YEAR, -1);
 			year = cal.get(Calendar.YEAR);
-			month = cal.get(Calendar.MONTH)+1;
-			String lastdm = String.valueOf(year)+"-"
+			month = cal.get(Calendar.MONTH) + 1;
+			String lastdm = String.valueOf(year)
+					+ "-"
 					+ (month < 10 ? "0" + String.valueOf(month) : String
 							.valueOf(month));
 			sql += "\n where dm>='" + lastdm + "' and dm<='" + cudm + "'";
@@ -436,9 +460,14 @@ public class GetInfomation {
 	@DataProvider
 	public Collection<AccountBaseInfo> getAllAccountBaseInfos()
 			throws Exception {
-		String sql = "SELECT\n" + "t1.ID_,\n" + "t1.ACCOUNT_,\n"
-				+ "t1.NAME_,\n" + "t1.CURRENCY_,\n" + "t1.CURRENTDATE_,\n"
-				+ "t1.DEPOSIT_,\n" + "t1.CLOSETRADE_,t2.PRODUCT_NAME_,t2.OUT_LINK_URL_,t2.MINIMUM_INVESTMENT\n"
+		String sql = "SELECT\n"
+				+ "t1.ID_,\n"
+				+ "t1.ACCOUNT_,\n"
+				+ "t1.NAME_,\n"
+				+ "t1.CURRENCY_,\n"
+				+ "t1.CURRENTDATE_,\n"
+				+ "t1.DEPOSIT_,\n"
+				+ "t1.CLOSETRADE_,t2.PRODUCT_NAME_,t2.OUT_LINK_URL_,t2.MINIMUM_INVESTMENT\n"
 				+ "FROM accountbaseinfo t1";
 		sql += "\n left join accountinfo t2 on t1.ACCOUNT_=t2.ACCOUNT_\n"
 				+ "where t2.ISABLE_=1\n" + "order by t2.ORDER_";
@@ -494,14 +523,16 @@ public class GetInfomation {
 				int count = this.jdbcTemplate.update(sql, UUID.randomUUID()
 						.toString(), info.getProductName(), info.getFilePath(),
 						info.getOrder(), info.getAccount(), info.getIsable(),
-						info.getBalanceSize(),info.getOutLinkUrl(),info.getMinimumInvestment());
+						info.getBalanceSize(), info.getOutLinkUrl(), info
+								.getMinimumInvestment());
 			}
 			if (EntityUtils.getState(info).equals(EntityState.MODIFIED)) {
 				String sql = "update accountinfo set PRODUCT_NAME_=?,FILE_PATH_=?,ORDER_=?,ACCOUNT_=?,ISABLE_=?,BALANCE_SIZE_=?,OUT_LINK_URL_=?,MINIMUM_INVESTMENT=? where ID_=?";
 				int count = this.jdbcTemplate.update(sql,
 						info.getProductName(), info.getFilePath(),
 						info.getOrder(), info.getAccount(), info.getIsable(),
-						info.getBalanceSize(),info.getOutLinkUrl(),info.getMinimumInvestment(), info.getId());
+						info.getBalanceSize(), info.getOutLinkUrl(),
+						info.getMinimumInvestment(), info.getId());
 			}
 			if (EntityUtils.getState(info).equals(EntityState.DELETED)) {
 				String sql = "delete from accountinfo where id_=?";
@@ -540,15 +571,16 @@ public class GetInfomation {
 		}
 		return pName;
 	}
-	
+
 	/**
 	 * 手动调用任务,刷新已启用的产品
+	 * 
 	 * @param param
 	 * @return
 	 */
 	@Expose
-	public String flushData(Map param)throws Exception{
-			String returnMsg=loadHtm.readHtm()?"success":"failure";
+	public String flushData(Map param) throws Exception {
+		String returnMsg = loadHtm.readHtm() ? "success" : "failure";
 		return returnMsg;
 	}
 }
