@@ -65,7 +65,7 @@ public class ContactUsMan {
 	public Collection<ContactUs> getContactInfo(Map<String, Object> map) {
 
 		String baseSql = " from forex_contactus where 1 = 1 ";
-
+		
 		if (map != null && map.size() > 0) {
 			ContactUs us = (ContactUs) map.get("param");
 			String name = us.getName();

@@ -240,30 +240,37 @@ dsContactUs.flushAsync();&#xD;
               <Separator/>
               <Fill/>
               <DataPilot>
-                <Property name="itemCodes">+,-,pages</Property>
+                <Property name="itemCodes">pages</Property>
+                <Property name="dataSet">dsContactUs</Property>
+                <Property name="ignored">true</Property>
               </DataPilot>
             </ToolBar>
             <DataGrid id="dGcontactInfo">
               <Property name="dataSet">dsContactUs</Property>
               <Property name="width">1000</Property>
               <Property name="readOnly">true</Property>
+              <Property name="dynaRowHeight">true</Property>
               <DataColumn name="id">
                 <Property name="property">id</Property>
                 <Property name="ignored">true</Property>
               </DataColumn>
               <DataColumn name="name">
                 <Property name="property">name</Property>
+                <Property name="width">150px</Property>
               </DataColumn>
               <DataColumn name="phone">
                 <Property name="property">phone</Property>
+                <Property name="width">200px</Property>
               </DataColumn>
               <DataColumn name="email">
                 <Property name="property">email</Property>
+                <Property name="width">200px</Property>
               </DataColumn>
               <DataColumn name="comments">
                 <Property name="property">comments</Property>
                 <Property name="userData"></Property>
                 <Property name="editorType">TextArea</Property>
+                <Property name="wrappable">true</Property>
               </DataColumn>
             </DataGrid>
           </Container>
